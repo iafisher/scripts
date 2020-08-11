@@ -1,0 +1,16 @@
+#!/bin/bash
+# Wrapper around Unix `date` program that treats the early morning (before 5am)
+# as the day before. Useful for scripts that need a logical rather than literal
+# notion of the current day.
+
+set -eu
+
+main() {
+  if [[ $(date +%k) -lt 5 ]]; then
+    date --date='yesterday' "$@"
+  else
+    date "$@"
+  fi
+}
+
+main "$@"

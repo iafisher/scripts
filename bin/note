@@ -1,0 +1,28 @@
+#!/bin/bash
+# Take a quick note.
+
+set -eu
+
+main() {
+  if [[ $# -ne 1 ]] || [[ -z "$1" ]]; then
+    echo "usage:"
+    echo "  note <title>"
+    echo "  note --list"
+    exit 1
+  fi
+
+  if [[ "$1" = --list ]]; then
+    ls "~/files/notes/$(date2 +%Y)"
+    exit
+  fi
+
+  d="~/files/notes/$(date2 +%Y)"
+  if [[ ! -e "$d" ]]; then
+    mkdir "$d"
+  fi
+
+  path="$d/$(date2 +%Y-%m-%d)-$1.txt"
+  vim "$path"
+}
+
+main "$@"
