@@ -8,13 +8,22 @@ main() {
     exit 1
   fi
 
-  if [[ $(date +%w) -eq 1 ]]; then
-    f="~/files/snippets/$(date +%Y-%m-%d).txt"
+  if [[ $(date2 +%w) -eq 1 ]]; then
+    f="$HOME/files/snippets/$(date2 +%Y-%m-%d).md"
   else
-    f="~/files/snippets/$(date --date='last Monday' +%Y-%m-%d).txt"
+    f="$HOME/files/snippets/$(date --date='last Monday' +%Y-%m-%d).md"
+  fi
+
+  if ! [[ -e "$f" ]]; then
+    (
+      echo "Week of Monday $(date2 +%Y-%m-%d)"
+      echo
+      echo "- blah blah blah"
+    )> "$f"
   fi
 
   vim "$f"
+  echo "$f"
 }
 
 main "$@"
