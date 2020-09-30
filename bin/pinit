@@ -1,0 +1,66 @@
+#!/bin/bash
+# Initialize a directory for a new coding project.
+#
+# Author: Ian Fisher (iafisher@fastmail.com)
+# Version: September 2020
+
+set -eux
+
+main() {
+  if [[ $# -gt 1 ]]; then
+    usage
+    exit 1
+  fi
+
+  if [[ $# -eq 1 ]]; then
+    if [[ "$1" = python ]]; then
+      python_init
+    elif [[ "$1" = rust ]]; then
+      rust_init
+    else
+      usage
+      exit 1
+    fi
+  else
+    base_init
+  fi
+}
+
+base_init() {
+  d="$(pwd)"
+  if [[ "$d" = /home/iafisher/dev ]] || [[ "$d" = /home/iafisher ]]; then
+    echo "error: cannot initialize project in $d"
+    exit 2
+  fi
+
+  if [[ -e .git ]]; then
+    echo "error: .git directory already exists"
+    exit 2
+  fi
+
+  cp "$(assets)"/gitignore.template .gitignore
+  git init
+  precommit init
+}
+
+python_init() {
+  base_init
+  cp "$(assets)"/flake8.template .flake8
+}
+
+rust_init() {
+  base_init
+  cargo init
+}
+
+assets() {
+  echo "$(dirname "$0")"/../assets
+}
+
+usage() {
+  echo "Usage: $0 [language]"
+  echo
+  echo "Supported languages: python, rust"
+}
+
+main "$@"
