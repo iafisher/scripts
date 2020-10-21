@@ -1,0 +1,29 @@
+#!/bin/bash
+# Wrapper script for cron jobs that prints date and time and
+# command to a log file.
+
+set -eu
+
+main() {
+  if [[ "$#" -lt 3 ]] || [[ "$1" != --log ]]; then
+    echo "Usage: $0 --log <path> <cmd...>"
+    exit 1
+  fi
+
+  log=$2
+  shift
+  shift
+
+  if [[ "$1" = -- ]]; then
+    shift;
+  fi
+
+  (
+    echo "=== $(date) ==="
+    echo "Command: $@"
+    echo
+    exec "$@"
+  ) 2>&1 >> "$log"
+}
+
+main "$@"
