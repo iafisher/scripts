@@ -21,9 +21,9 @@ main() {
     mkdir "$d"
   fi
 
-  # Remove .txt suffix if there is one.
-  path="${1%.txt}"
-  path="$d/$(date2 +%Y-%m-%d)-$path.txt"
+  # Remove .md suffix if there is one.
+  path="${1%.md}"
+  path="$d/$(date2 +%Y-%m-%d)-$path.md"
   vim "$path"
 }
 
