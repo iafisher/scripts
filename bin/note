@@ -4,7 +4,7 @@
 set -eu
 
 main() {
-  if [[ $# -ne 1 ]] || [[ -z "$1" ]]; then
+  if [[ $# -ne 1 ]] || [[ -z "$1" ]] || [[ "$1" = -h ]] || [[ "$1" = --help ]]; then
     echo "usage:"
     echo "  note <title>"
     echo "  note --list"
