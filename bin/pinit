@@ -4,7 +4,7 @@
 # Author: Ian Fisher (iafisher@fastmail.com)
 # Version: September 2020
 
-set -eux
+set -eu
 
 main() {
   if [[ $# -gt 1 ]]; then
@@ -27,6 +27,7 @@ main() {
 }
 
 base_init() {
+  set -x
   d="$(pwd)"
   if [[ "$d" = /home/iafisher/dev ]] || [[ "$d" = /home/iafisher ]]; then
     echo "error: cannot initialize project in $d"
