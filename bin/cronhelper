@@ -23,7 +23,7 @@ main() {
     echo "Command: $@"
     echo
     exec "$@"
-  ) 2>&1 >> "$log"
+  ) &>> "$log"
 }
 
 main "$@"
