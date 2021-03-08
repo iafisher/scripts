@@ -25,6 +25,7 @@ main() {
   path="${1%.md}"
   path="$d/$(date2 +%Y-%m-%d)-$path.md"
   vim "$path"
+  echo "$path"
 }
 
 main "$@"
