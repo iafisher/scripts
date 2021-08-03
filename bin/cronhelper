@@ -40,7 +40,7 @@ main() {
   } &>> "$log"
 
   # Fail if the return 
-  if [[ $r -eq 0 ]]; then
+  if [[ $r -ne 0 ]]; then
     fail
   fi
 }
