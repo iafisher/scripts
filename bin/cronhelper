@@ -1,29 +1,53 @@
 #!/bin/bash
-# Wrapper script for cron jobs that prints date and time and
-# command to a log file.
-
-set -eu
+# Wrapper script for cron jobs that prints date, time and command to a log
+# file.
+#
+# If the command exits with a non-zero code, then a file called `$log.FAIL`
+# (e.g., for `--log cron.log` the file is called `cron.log.FAIL`) will be
+# created.
 
 main() {
   if [[ "$#" -lt 3 ]] || [[ "$1" != --log ]]; then
     echo "Usage: $0 --log <path> <cmd...>"
-    exit 1
+    fail
   fi
 
+  # Read the log file path from `--log LOG`
   log=$2
   shift
   shift
+
+  # Remove an existing failure file if present.
+  rm -f "$log.FAIL"
 
   if [[ "$1" = -- ]]; then
     shift;
   fi
 
-  (
+  cmd=$1
+  shift
+
+  # Group the following commands so that their output can be redirected to the
+  # log file.
+  {
     echo "=== $(date) ==="
-    echo "Command: $@"
+    echo "Command: $cmd $@"
     echo
-    exec "$@"
-  ) &>> "$log"
+    "$cmd" "$@"
+    r=$?
+    echo
+    echo "Return code: $r"
+  } &>> "$log"
+
+  # Fail if the return 
+  if [[ $r -eq 0 ]]; then
+    fail
+  fi
+}
+
+fail() {
+  touch "$log.FAIL"
+  exit 1
 }
 
 main "$@"
