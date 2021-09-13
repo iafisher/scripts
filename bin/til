@@ -10,7 +10,7 @@ main() {
     exit 1
   fi
 
-  fp=~/files/writing/til/til-$(date2 +%Y-%m).txt
+  fp=~/files/til/til-$(date2 +%Y-%m).md
   echo "$(date2 +%Y-%m-%d): $1" >> "$fp"
   echo "$fp"
 }
